@@ -175,9 +175,6 @@ export class AppComponent implements OnInit {
     let firstDay = new Date(date.getFullYear(), date.getMonth() - this.month.value, 1);
     let lastDay = new Date(date.getFullYear(), date.getMonth() - this.month.value + 1, 0);
 
-    console.log(firstDay);
-    console.log(lastDay);
-
     if(this.transactions.length){
        this.filteredTransactions = this.transactions.filter((item) => {
            let tranDate = new Date(item.date);
