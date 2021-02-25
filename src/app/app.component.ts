@@ -142,24 +142,80 @@ export class AppComponent implements OnInit {
     console.log(this.balance);
   }
 
+  paymentTypeChange(){
+
+    this.paymentType.value == 'credit' ? this.category.disable() : this.category.enable();
+  }
+
+  resetCategory(){
+    if(this.categoryField.value !== null){
+      this.categoryField.setValue('');
+    }
+
+  }
+
   frequencyChange(){
+
+    this.resetCategory()
+
     let searchType = this.searchField.value;
 
     if(searchType === 'Current'){
       this.month.reset();
-      if(this.transactions.length > 10){
-        this.filteredTransactions = this.transactions.slice(-10);
-      }
-      else{
-        this.filteredTransactions = this.transactions.slice();
-      }
+      this.month.disable();
+      this.filterByCurrent();
     } else {
       this.filteredTransactions = [];
+      this.month.enable();
+    }
+  }
+
+  sortBydate(a,b){
+
+  }
+
+  sortByEntrydate(){
+    this.filteredTransactions.sort((a,b) => {
+      let date1 = new Date(a.date);
+      let date2 = new Date(b.date);
+      if(date1 < date2){
+        return 0;
+      }else{
+        return 1;
+      }
+    });
+    //this.filteredTransactions.reverse();
+  }
+
+  filterByCurrent(){
+    if(this.transactions.length > 10){
+      this.filteredTransactions = this.transactions.slice(-10);
+      this.sortByEntrydate();
+
+    }
+    else{
+      this.filteredTransactions = this.transactions.slice();
+      this.sortByEntrydate();
+    }
+    if(this.categoryField.value !== '' && this.categoryField.value !=null){
+      this.filterBycategory();
     }
   }
 
   categoryChange(){
-    this.frequencyChange();
+
+    if(this.searchField.value == 'Current'){
+      //this.frequencyChange();
+      this.filterByCurrent();
+    } else{
+      //this.monthChange();
+      this.filterByMonths();
+    }
+
+    this.filterBycategory();
+  }
+
+  filterBycategory(){
     if(this.filteredTransactions.length > 0){
       this.filteredTransactions = this.filteredTransactions.filter((item) => {
         return item.category === this.categoryField.value
@@ -167,20 +223,31 @@ export class AppComponent implements OnInit {
     }
   }
 
-  monthChange(){
-
+  filterByMonths(){
     this.searchField.setValue(this.frequency[1]);
 
     let date = new Date();
     let firstDay = new Date(date.getFullYear(), date.getMonth() - this.month.value, 1);
-    let lastDay = new Date(date.getFullYear(), date.getMonth() - this.month.value + 1, 0);
+
+    //let lastDay = new Date(date.getFullYear(), date.getMonth() - this.month.value + 1, 0);
+    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 1);
 
     if(this.transactions.length){
        this.filteredTransactions = this.transactions.filter((item) => {
            let tranDate = new Date(item.date);
            return tranDate >= firstDay && tranDate <= lastDay ;
        })
+       this.sortByEntrydate();
     }
+
+    if(this.categoryField.value !== '' && this.categoryField.value !=null){
+      this.filterBycategory();
+    }
+  }
+
+  monthChange(){
+    this.resetCategory();
+    this.filterByMonths();
 
   }
 

@@ -29,15 +29,11 @@
 
 
 
-                    <!-- <div class="label">Date</div>
-                    <div class="control">
-                        <input type="text" formControlName="date" class="form-control">
-                    </div> -->
 
 
                     <div class="form-group">
                         <div class="label">Payment Type</div>
-                        <select class="form-control" formControlName="paymentType">
+                        <select class="form-control" (change)="paymentTypeChange()" formControlName="paymentType">
                         <!-- <option value="">Please select a payment type</option> -->
                         <option *ngFor="let tran of transactionType"
                                 [value]="tran.value">
@@ -49,20 +45,11 @@
                         </div>
                     </div>
 
-                    <!-- <div class="label">Payment Type</div>
-                    <div class="control">
-                        <select class="form-control" formControlName="paymentType">
-                    <option value="">Please select a payment type</option>
-                    <option *ngFor="let tran of transactionType"
-                            [value]="tran.value">
-                            {{tran.label}}
-                    </option>
-                  </select>
-                    </div> -->
+
 
                     <div class="form-group">
                         <div class="label">Category</div>
-                        <select [disabled]="paymentType.value == 'debit'" class="form-control" formControlName="category">
+                        <select class="form-control" formControlName="category">
                         <!-- <option value="">Please select a category</option> -->
                         <option *ngFor="let cat of categories"
                                 [value]="cat">
@@ -74,16 +61,6 @@
                         </div>
                     </div>
 
-                    <!-- <div class="label">Category</div>
-                    <div class="control">
-                        <select [disabled]="paymentType.value == 'debit'" class="form-control" formControlName="category">
-                    <option value="">Please select a category</option>
-                    <option *ngFor="let cat of categories"
-                            [value]="cat">
-                            {{cat}}
-                    </option>
-                  </select>
-                    </div> -->
 
 
                     <div class="form-group">
@@ -94,11 +71,6 @@
                         </div>
                     </div>
 
-
-                    <!-- <div class="label">Description</div>
-                    <div class="control">
-                        <input type="text" formControlName="description" class="form-control">
-                    </div> -->
 
 
 
@@ -169,7 +141,7 @@
                             </tr>
                             <tr *ngFor="let tran of filteredTransactions">
                                 <td>{{tran.trxn}}</td>
-                                <td>{{tran.description}}</td>
+                                <td>{{tran.date}}</td>
                                 <td>{{tran.category}}</td>
                                 <td>{{tran.amount}}</td>
                                 <td>{{tran.paymentType}}</td>
